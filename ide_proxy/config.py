@@ -6,4 +6,4 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "abc")
     ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
-    
+    IDE_CORE_URL = os.environ.get("IDE_CORE_URL")

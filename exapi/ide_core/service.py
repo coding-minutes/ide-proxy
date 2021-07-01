@@ -2,56 +2,61 @@ import requests
 from http import HTTPStatus
 
 from utils.requests import ExRequestSession
-from api.exapi.judge0.models import Submission
-from judge_proxy.config import Config
+from exapi.ide_core.models import CodeFile
+from utils.make_error import runtime_error
+from ide_proxy.config import Config
 
 
-class Judge0ExApi:
+class IdeCoreExApi:
     def __init__(self, url: str):
-        headers = {"X-Auth-Token": "something"}
-
         self._url = url
-        self._session = ExRequestSession(headers=headers)
+        self._session = ExRequestSession()
 
-    def create_submission(self, source_code: str, language_id: int, stdin: str) -> str:
-        params = {"base64_encoded": "true"}
-        body = {"source_code": source_code, "language_id": language_id, "stdin": stdin}
-        response = self._session.post(
-            f"{self._url}/submissions", params=params, json=body
-        )
-
-        if response.status_code != HTTPStatus.CREATED:
-            raise RuntimeError(
-                f"""
-                Runtime Error
-                Message: {response.content.decode("utf-8")}
-                Status Code: {response.status_code}
-            """
-            )
-
-        data = response.json()
-
-        return data["token"]
-
-    def get_submission(self, submission_token: str) -> Submission:
-        params = {"base64_encoded": "true"}
-        response = self._session.get(
-            f"{self._url}/submissions/{submission_token}", params=params
-        )
+    def get_code(self, code_id: int):
+        response = self._session.get(f"{self._url}/codes/{code_id}")
 
         if response.status_code != HTTPStatus.OK:
-            raise RuntimeError(
-                f"""
-                Runtime Error
-                Message: {response.content.decode("utf-8")}
-                Status Code: {response.status_code}
-            """
-            )
+            raise RuntimeError(runtime_error(response))
 
         data = response.json()
 
-        return Submission.from_dict(dikt=data)
+        return CodeFile.from_dict(dikt=data)
+
+    def save_code(self, source: str, user_email: str, lang: str, input: str):
+        body = {
+            "source": source,
+            "lang": lang,
+            "input": input,
+            "user_email": user_email,
+        }
+
+        response = self._session.post(f"{self._url}/codes/", data=body)
+
+        if response.status_code != HTTPStatus.CREATED:
+            raise RuntimeError(runtime_error(response))
+
+        data = response.json()
+
+        return CodeFile.from_dict(dikt=data)
+
+    def update_code(self, source: str, user_email: str, lang: str, input: str):
+        body = {
+            "source": source,
+            "lang": lang,
+            "input": input,
+            "user_email": user_email,
+        }
+
+        # ? Patch or Put
+        response = self._session.put(f"{self._url}/codes/", data=body)
+
+        if response.status_code != HTTPStatus.CREATED:
+            raise RuntimeError(runtime_error(response))
+
+        data = response.json()
+
+        return CodeFile.from_dict(dikt=data)
 
 
-def get_judge0_exapi():
-    return Judge0ExApi(url=Config.JUDGE0_URL)
+def get_idecore_exapi():
+    return IdeCoreExApi(url=Config.IDE_CORE_URL)

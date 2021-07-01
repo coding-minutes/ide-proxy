@@ -10,6 +10,7 @@ Django = "^3.2.4"
 django-rest-framework = "^0.1.0"
 black = "^21.6b0"
 python-dotenv = "^0.18.0"
+requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 
