@@ -18,7 +18,8 @@ class IdeCoreExApi:
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(runtime_error(response))
 
-        data = response.json()
+        res = response.json()
+        data = res['data']
 
         return CodeFile.from_dict(dikt=data)
 
@@ -35,25 +36,28 @@ class IdeCoreExApi:
         if response.status_code != HTTPStatus.CREATED:
             raise RuntimeError(runtime_error(response))
 
-        data = response.json()
+        parsed_response = response.json()
+        data = parsed_response['data']
 
         return CodeFile.from_dict(dikt=data)
 
-    def update_code(self, source: str, user_email: str, lang: str, input: str):
-        body = {
-            "source": source,
-            "lang": lang,
-            "input": input,
-            "user_email": user_email,
-        }
+    def update_code(self, source: str, lang: str, input: str, code_id:int):
+        body = {}
+        if source:
+            body['source'] = source
+        if lang:
+            body['lang'] = lang
+        if input:
+            body['input'] = input
 
         # ? Patch or Put
-        response = self._session.put(f"{self._url}/codes/", data=body)
+        response = self._session.patch(f"{self._url}/codes/{code_id}", data=body)
 
-        if response.status_code != HTTPStatus.CREATED:
+        if response.status_code != HTTPStatus.OK:
             raise RuntimeError(runtime_error(response))
 
-        data = response.json()
+        parsed_response = response.json()
+        data = parsed_response['data']
 
         return CodeFile.from_dict(dikt=data)
 
