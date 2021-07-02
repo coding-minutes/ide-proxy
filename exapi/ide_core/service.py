@@ -19,7 +19,7 @@ class IdeCoreExApi:
             raise RuntimeError(runtime_error(response))
 
         res = response.json()
-        data = res['data']
+        data = res["data"]
 
         return CodeFile.from_dict(dikt=data)
 
@@ -31,33 +31,32 @@ class IdeCoreExApi:
             "user_email": user_email,
         }
 
-        response = self._session.post(f"{self._url}/codes/", data=body)
+        response = self._session.post(f"{self._url}/upsert/", json=body)
 
         if response.status_code != HTTPStatus.CREATED:
             raise RuntimeError(runtime_error(response))
 
         parsed_response = response.json()
-        data = parsed_response['data']
+        x = parsed_response["data"]
 
-        return CodeFile.from_dict(dikt=data)
+        return CodeFile.from_dict(dikt=x)
 
-    def update_code(self, source: str, lang: str, input: str, code_id:int):
-        body = {}
+    def update_code(self, source: str, lang: str, input: str, code_id: int):
+        body = {"id": code_id}
         if source:
-            body['source'] = source
+            body["source"] = source
         if lang:
-            body['lang'] = lang
+            body["lang"] = lang
         if input:
-            body['input'] = input
+            body["input"] = input
 
-        # ? Patch or Put
-        response = self._session.patch(f"{self._url}/codes/{code_id}", data=body)
+        response = self._session.post(f"{self._url}/upsert/", data=body)
 
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(runtime_error(response))
 
         parsed_response = response.json()
-        data = parsed_response['data']
+        data = parsed_response["data"]
 
         return CodeFile.from_dict(dikt=data)
 
