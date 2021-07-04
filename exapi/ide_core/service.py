@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from utils.requests import ExRequestSession
 from exapi.ide_core.models import CodeFile
-from utils.make_error import runtime_error
+from utils.error import mk_runtime_error
 from ide_proxy.config import Config
 
 
@@ -16,7 +16,7 @@ class IdeCoreExApi:
         response = self._session.get(f"{self._url}/codes/{code_id}")
 
         if response.status_code != HTTPStatus.OK:
-            raise RuntimeError(runtime_error(response))
+            raise RuntimeError(mk_runtime_error(response))
 
         res = response.json()
         data = res["data"]
@@ -34,7 +34,7 @@ class IdeCoreExApi:
         response = self._session.post(f"{self._url}/upsert/", json=body)
 
         if response.status_code != HTTPStatus.CREATED:
-            raise RuntimeError(runtime_error(response))
+            raise RuntimeError(mk_runtime_error(response))
 
         parsed_response = response.json()
         x = parsed_response["data"]
@@ -53,7 +53,7 @@ class IdeCoreExApi:
         response = self._session.post(f"{self._url}/upsert/", data=body)
 
         if response.status_code != HTTPStatus.OK:
-            raise RuntimeError(runtime_error(response))
+            raise RuntimeError(mk_runtime_error(response))
 
         parsed_response = response.json()
         data = parsed_response["data"]
