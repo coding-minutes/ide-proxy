@@ -12,6 +12,7 @@ black = "^21.6b0"
 python-dotenv = "^0.18.0"
 requests = "^2.25.1"
 django-cors-headers = "^3.7.0"
+PyJWT = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 

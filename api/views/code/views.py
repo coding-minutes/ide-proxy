@@ -8,7 +8,7 @@ from exapi.ide_core.service import get_idecore_exapi
 
 class PingPongView(APIView):
     def get(self, request):
-        print(request.path)
+        print(request.user)
         return Response({"message": "pong"})
 
 

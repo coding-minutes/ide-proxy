@@ -18,6 +18,7 @@ ALLOWED_HOSTS = Config.ALLOWED_HOSTS
 INSTALLED_APPS = ["rest_framework", "corsheaders"]
 
 MIDDLEWARE = [
+    "api.middlewares.auth.JWTAuthenticationMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -29,7 +30,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": [],
-    "UNAUTHENTICATED_USER": None,
+    # "UNAUTHENTICATED_USER": None,
 }
 
 ROOT_URLCONF = "ide_proxy.urls"
