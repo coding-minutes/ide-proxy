@@ -7,3 +7,4 @@ class Config:
     ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
     IDE_CORE_URL = os.environ.get("IDE_CORE_URL")
+    JUDGE_PROXY_URL = os.environ.get("JUDGE_PROXY_URL")

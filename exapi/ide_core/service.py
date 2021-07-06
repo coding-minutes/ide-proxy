@@ -13,7 +13,7 @@ class IdeCoreExApi:
         self._session = ExRequestSession()
 
     def get_code(self, code_id: int):
-        response = self._session.get(f"{self._url}/codes/{code_id}")
+        response = self._session.get(f"{self._url}/api/codes/{code_id}")
 
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(mk_runtime_error(response))
@@ -31,7 +31,7 @@ class IdeCoreExApi:
             "user_email": user_email,
         }
 
-        response = self._session.post(f"{self._url}/upsert/", json=body)
+        response = self._session.post(f"{self._url}/api/upsert/", json=body)
 
         if response.status_code != HTTPStatus.CREATED:
             raise RuntimeError(mk_runtime_error(response))
@@ -50,7 +50,7 @@ class IdeCoreExApi:
         if input:
             body["input"] = input
 
-        response = self._session.post(f"{self._url}/upsert/", data=body)
+        response = self._session.post(f"{self._url}/api/upsert/", json=body)
 
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(mk_runtime_error(response))
