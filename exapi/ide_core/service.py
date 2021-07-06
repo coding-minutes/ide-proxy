@@ -37,9 +37,9 @@ class IdeCoreExApi:
             raise RuntimeError(mk_runtime_error(response))
 
         parsed_response = response.json()
-        x = parsed_response["data"]
+        data = parsed_response["data"]
 
-        return CodeFile.from_dict(dikt=x)
+        return CodeFile.from_dict(dikt=data)
 
     def update_code(self, source: str, lang: str, input: str, code_id: int):
         body = {"id": code_id}
