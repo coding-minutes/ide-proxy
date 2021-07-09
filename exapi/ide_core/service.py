@@ -41,7 +41,9 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
-    def update_code(self, source: str, lang: str, input: str, code_id: str):
+    def update_code(
+        self, source: str, lang: str, input: str, code_id: str, user_email: str
+    ):
         body = {"id": code_id}
         if source:
             body["source"] = source
@@ -49,6 +51,22 @@ class IdeCoreExApi:
             body["lang"] = lang
         if input:
             body["input"] = input
+
+        # Verify whether current user owns the saved code.
+        response = self._session.get(f"{self._url}/api/codes/{code_id}")
+        res = response.json()
+        data = res["data"]
+
+        # If the current user is now the owner of the saved code, then save and return new code for current user.
+        if data["user_email"] != user_email:
+            return self.save_code(
+                source=body.get("source", data["source"]),
+                user_email=user_email,
+                lang=body.get("lang", data["lang"]),
+                input=body.get("input", data["input"]),
+            )
+
+        # Otherwise proceed with the patch update.
 
         response = self._session.post(f"{self._url}/api/upsert/", json=body)
 

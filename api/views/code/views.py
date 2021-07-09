@@ -32,11 +32,14 @@ class FetchUpdateCodeView(APIView):
         data = request.data
         code_id = self.kwargs["pk"]
 
+        user = request.user
+
         code = get_idecore_exapi().update_code(
             source=data.get("source"),
             lang=data.get("lang"),
             input=data.get("input"),
             code_id=code_id,
+            user_email=user.email,
         )
         serializer = CodeFileSerializer(code)
         data = serializer.data
@@ -45,7 +48,7 @@ class FetchUpdateCodeView(APIView):
 
 
 class SaveCodeView(APIView):
-    authentication_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
