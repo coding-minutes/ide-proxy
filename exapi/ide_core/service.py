@@ -12,7 +12,7 @@ class IdeCoreExApi:
         self._url = url
         self._session = ExRequestSession()
 
-    def get_code(self, code_id: int):
+    def get_code(self, code_id: str):
         response = self._session.get(f"{self._url}/api/codes/{code_id}")
 
         if response.status_code != HTTPStatus.OK:
@@ -41,7 +41,7 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
-    def update_code(self, source: str, lang: str, input: str, code_id: int):
+    def update_code(self, source: str, lang: str, input: str, code_id: str):
         body = {"id": code_id}
         if source:
             body["source"] = source

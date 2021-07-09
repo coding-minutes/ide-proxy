@@ -6,18 +6,14 @@ from rest_framework.response import Response
 from exapi.ide_core.service import get_idecore_exapi
 
 
-class PingPongView(APIView):
-    def get(self, request):
-        print(request.path)
-        return Response({"message": "pong"})
-
-
 class CodeFileSerializer(serializers.Serializer):
     source = serializers.CharField()
     lang = serializers.CharField()
     input = serializers.CharField(default="")
     user_email = serializers.EmailField()
-    id = serializers.CharField(max_length=4,read_only=True, required=False, allow_null=True)
+    id = serializers.CharField(
+        max_length=4, read_only=True, required=False, allow_null=True
+    )
 
 
 class FetchUpdateCodeView(APIView):
