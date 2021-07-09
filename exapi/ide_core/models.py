@@ -8,7 +8,7 @@ class CodeFile:
     user_email: str
     lang: str
     input: str
-    id: Optional[Union[int, str]]
+    id: str
 
     @classmethod
     def from_dict(cls, dikt: Dict) -> "CodeFile":

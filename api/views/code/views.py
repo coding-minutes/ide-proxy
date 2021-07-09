@@ -17,7 +17,7 @@ class CodeFileSerializer(serializers.Serializer):
     lang = serializers.CharField()
     input = serializers.CharField(default="")
     user_email = serializers.EmailField()
-    id = serializers.IntegerField(read_only=True, required=False, allow_null=True)
+    id = serializers.CharField(max_length=4,read_only=True, required=False, allow_null=True)
 
 
 class FetchUpdateCodeView(APIView):
