@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from domain.models import User
+from api.mixins.permissions import IsAuthenticated
 from exapi.ide_core.service import get_idecore_exapi
 
 
@@ -30,7 +32,6 @@ class FetchUpdateCodeView(APIView):
         data = request.data
         code_id = self.kwargs["pk"]
 
-        # * : user_email cannot be updated
         code = get_idecore_exapi().update_code(
             source=data.get("source"),
             lang=data.get("lang"),
@@ -44,15 +45,15 @@ class FetchUpdateCodeView(APIView):
 
 
 class SaveCodeView(APIView):
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
+        user: User = request.user
 
-        # TODO: user_email must be fetched from request.user
-        # TODO: but use this until authentication is set up
         code = get_idecore_exapi().save_code(
             source=data["source"],
-            user_email=data["user_email"],
+            user_email=user.email,
             lang=data["lang"],
             input=data["input"],
         )
