@@ -1,6 +1,8 @@
-from django.urls import path
-
-from api.views import PingPongView
+from django.urls import path, include
 
 
-urlpatterns = [path("ping/", PingPongView.as_view())]
+urlpatterns = [
+    path("code/", include("api.views.code.urls")),
+    path("judge/", include("api.views.judge.urls")),
+    path("auth/", include("api.views.auth.urls")),
+]

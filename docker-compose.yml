@@ -2,9 +2,9 @@ version: "3"
 
 services:
     ide_proxy:
-        container_name: ide_proxy
+        image: codingminutes/ide_proxy
         env_file:
             - .env
         ports:
             - "9000:9000"
-        build: ./
+        build: .
