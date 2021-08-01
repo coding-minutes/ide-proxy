@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = Config.SECRET_KEY
 
-DEBUG = True
+DEBUG = Config.DEBUG
 
 ALLOWED_HOSTS = Config.ALLOWED_HOSTS
 
