@@ -8,5 +8,5 @@ urlpatterns = [
     path("languages", proxy(url=f"{Config.JUDGE_PROXY_URL}/api/languages")),
     path("stubs", proxy(url=f"{Config.JUDGE_PROXY_URL}/api/stubs")),
     path("run", RunView.as_view()),
-    path("submission/<submission_id>", SubmissionView.as_view()),
+    path("submissions/<submission_id>", SubmissionView.as_view()),
 ]
