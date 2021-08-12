@@ -16,6 +16,7 @@ class CodeFileSerializer(serializers.Serializer):
     id = serializers.CharField(
         max_length=4, read_only=True, required=False, allow_null=True
     )
+    title = serializers.CharField()
 
 
 class FetchUpdateCodeView(APIView):
@@ -64,3 +65,17 @@ class SaveCodeView(APIView):
         data = serializer.data
 
         return Response(data, status=201)
+
+
+class SavedCodeListView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        query = request.query_params.get("query","")
+
+        codelist = get_idecore_exapi().get_saved_list(user_email=user.email, query=query)
+        serializer = CodeFileSerializer(codelist,many=True)
+        data = serializer.data
+
+        return Response(data, status=200)

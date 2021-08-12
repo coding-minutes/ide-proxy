@@ -78,6 +78,18 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
+    def get_saved_list(self, user_email, query=""):
+        params = {"user_email": user_email, "query": query}
+        response = self._session.get(url=f"{self._url}/api/saved/", params=params)
+
+        if response.status_code != HTTPStatus.OK:
+            raise RuntimeError(mk_runtime_error(response))
+
+        res = response.json()
+        data = res["data"]
+
+        return [CodeFile.from_dict(dikt=code) for code in data]
+
 
 def get_idecore_exapi():
     return IdeCoreExApi(url=Config.IDE_CORE_URL)
