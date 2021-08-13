@@ -19,5 +19,5 @@ class CodeFile:
             lang=dikt["lang"],
             input=dikt["input"],
             id=dikt.get("id", None),
-            title=dikt['title']
+            title=dikt["title"],
         )

@@ -4,7 +4,7 @@ from api.views.code.views import FetchUpdateCodeView, SaveCodeView, SavedCodeLis
 
 
 urlpatterns = [
-    path('saved', SavedCodeListView.as_view()),
+    path("saved", SavedCodeListView.as_view()),
     path("<pk>", FetchUpdateCodeView.as_view()),
     path("", SaveCodeView.as_view()),
 ]

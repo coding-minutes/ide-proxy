@@ -72,10 +72,19 @@ class SavedCodeListView(APIView):
 
     def get(self, request):
         user = request.user
-        query = request.query_params.get("query","")
+        query = request.query_params.get("query", "")
+        page = request.query_params.get("page", 1)
 
-        codelist = get_idecore_exapi().get_saved_list(user_email=user.email, query=query)
-        serializer = CodeFileSerializer(codelist,many=True)
-        data = serializer.data
+        data, count = get_idecore_exapi().get_saved_list(
+            user_email=user.email, query=query, page=page
+        )
+        serializer = CodeFileSerializer(data, many=True)
 
-        return Response(data, status=200)
+        return Response(
+            {
+                "count": count,
+                "page": page,
+                "data": serializer.data,
+            },
+            status=200,
+        )

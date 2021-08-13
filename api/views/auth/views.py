@@ -16,5 +16,12 @@ class VerifyAuthenticationView(APIView):
     def post(self, request):
         user = request.user
         if user:
-            return Response({"email": user.email, "first_name" : user.first_name, "last_name":user.last_name}, status=200)
+            return Response(
+                {
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                },
+                status=200,
+            )
         return Response({"message": "Invalid Token"}, status=401)

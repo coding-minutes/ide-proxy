@@ -78,8 +78,8 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
-    def get_saved_list(self, user_email, query=""):
-        params = {"user_email": user_email, "query": query}
+    def get_saved_list(self, user_email, query="", page=1):
+        params = {"user_email": user_email, "query": query, "page": page}
         response = self._session.get(url=f"{self._url}/api/saved/", params=params)
 
         if response.status_code != HTTPStatus.OK:
@@ -88,7 +88,8 @@ class IdeCoreExApi:
         res = response.json()
         data = res["data"]
 
-        return [CodeFile.from_dict(dikt=code) for code in data]
+        data = [CodeFile.from_dict(dikt=code) for code in data]
+        return data, res["count"]
 
 
 def get_idecore_exapi():
