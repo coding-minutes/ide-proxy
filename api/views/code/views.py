@@ -12,7 +12,6 @@ class CodeFileSerializer(serializers.Serializer):
     source = serializers.CharField()
     lang = serializers.CharField()
     input = serializers.CharField(default="")
-    user_email = serializers.EmailField()
     id = serializers.CharField(
         max_length=4, read_only=True, required=False, allow_null=True
     )
@@ -75,16 +74,12 @@ class SavedCodeListView(APIView):
         query = request.query_params.get("query", "")
         page = request.query_params.get("page", 1)
 
-        data, count = get_idecore_exapi().get_saved_list(
+        res = get_idecore_exapi().get_saved_list(
             user_email=user.email, query=query, page=page
         )
-        serializer = CodeFileSerializer(data, many=True)
-
+        serializer = CodeFileSerializer(res["data"], many=True)
+        res["data"] = serializer.data
         return Response(
-            {
-                "count": count,
-                "page": page,
-                "data": serializer.data,
-            },
+            res,
             status=200,
         )

@@ -88,8 +88,8 @@ class IdeCoreExApi:
         res = response.json()
         data = res["data"]
 
-        data = [CodeFile.from_dict(dikt=code) for code in data]
-        return data, res["count"]
+        res["data"] = [CodeFile.from_dict(dikt=code) for code in data]
+        return res
 
 
 def get_idecore_exapi():
