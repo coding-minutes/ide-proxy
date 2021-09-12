@@ -23,13 +23,15 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
-    def save_code(self, source: str, user_email: str, lang: str, input: str, title: str):
+    def save_code(
+        self, source: str, user_email: str, lang: str, input: str, title: str
+    ):
         body = {
             "source": source,
             "lang": lang,
             "input": input,
             "user_email": user_email,
-            "title": title
+            "title": title,
         }
 
         response = self._session.post(f"{self._url}/api/upsert/", json=body)
@@ -43,7 +45,13 @@ class IdeCoreExApi:
         return CodeFile.from_dict(dikt=data)
 
     def update_code(
-        self, source: str, lang: str, input: str, code_id: str, user_email: str, title: str
+        self,
+        source: str,
+        lang: str,
+        input: str,
+        code_id: str,
+        user_email: str,
+        title: str,
     ):
         body = {"id": code_id}
         if source:
