@@ -23,12 +23,15 @@ class IdeCoreExApi:
 
         return CodeFile.from_dict(dikt=data)
 
-    def save_code(self, source: str, user_email: str, lang: str, input: str):
+    def save_code(
+        self, source: str, user_email: str, lang: str, input: str, title: str
+    ):
         body = {
             "source": source,
             "lang": lang,
             "input": input,
             "user_email": user_email,
+            "title": title,
         }
 
         response = self._session.post(f"{self._url}/api/upsert/", json=body)
@@ -42,7 +45,13 @@ class IdeCoreExApi:
         return CodeFile.from_dict(dikt=data)
 
     def update_code(
-        self, source: str, lang: str, input: str, code_id: str, user_email: str
+        self,
+        source: str,
+        lang: str,
+        input: str,
+        code_id: str,
+        user_email: str,
+        title: str,
     ):
         body = {"id": code_id}
         if source:
@@ -51,6 +60,8 @@ class IdeCoreExApi:
             body["lang"] = lang
         if input:
             body["input"] = input
+        if title:
+            body["title"] = title
 
         # Verify whether current user owns the saved code.
         response = self._session.get(f"{self._url}/api/codes/{code_id}")
@@ -77,6 +88,19 @@ class IdeCoreExApi:
         data = parsed_response["data"]
 
         return CodeFile.from_dict(dikt=data)
+
+    def get_saved_list(self, user_email, query="", page=1):
+        params = {"user_email": user_email, "query": query, "page": page}
+        response = self._session.get(url=f"{self._url}/api/saved/", params=params)
+
+        if response.status_code != HTTPStatus.OK:
+            raise RuntimeError(mk_runtime_error(response))
+
+        res = response.json()
+        data = res["data"]
+
+        res["data"] = [CodeFile.from_dict(dikt=code) for code in data]
+        return res
 
 
 def get_idecore_exapi():
