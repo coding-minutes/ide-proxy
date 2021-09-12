@@ -20,7 +20,6 @@ class CodeFileSerializer(serializers.Serializer):
     created_at = serializers.DateField(read_only=True)
     updated_at = serializers.DateField(read_only=True)
 
-
 class FetchUpdateCodeView(APIView):
     def get(self, request, **kwargs):
         code_id = self.kwargs["pk"]
