@@ -9,7 +9,7 @@ class Profile:
     email: str
     photo: str
     id: str
-    
+
     @classmethod
     def from_dict(cls, dikt):
         return cls(
@@ -21,6 +21,6 @@ class Profile:
         )
 
     @classmethod
-    def from_jwt(cls,token):
-        decoded = jwt.decode(token,options={"verify_signature":False})
+    def from_jwt(cls, token):
+        decoded = jwt.decode(token, options={"verify_signature": False})
         return cls.from_dict(decoded)

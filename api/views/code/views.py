@@ -12,13 +12,14 @@ from utils.validator import body_validator
 class CodeFileSerializer(serializers.Serializer):
     source = serializers.CharField()
     lang = serializers.CharField()
-    input = serializers.CharField(default="")
+    input = serializers.CharField(default="", allow_null=True, required=False)
     id = serializers.CharField(
         max_length=4, read_only=True, required=False, allow_null=True
     )
     title = serializers.CharField()
     created_at = serializers.DateField(read_only=True)
     updated_at = serializers.DateField(read_only=True)
+
 
 class FetchUpdateCodeView(APIView):
     def get(self, request, **kwargs):

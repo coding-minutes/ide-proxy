@@ -3,18 +3,19 @@ from utils.error import mk_runtime_error
 from http import HTTPStatus
 from ide_proxy.config import Config
 
+
 class OlympusExapi:
     def __init__(self, url: str):
         self._url = url
 
     def signin_with_token(self, token):
         payload = {
-            "data" : {
-                "token" : token,
+            "data": {
+                "token": token,
             },
-            "strategy" : "google"
+            "strategy": "google",
         }
-        response = requests.post(f"{self._url}/api/users/signin/",json=payload)
+        response = requests.post(f"{self._url}/api/users/signin/", json=payload)
 
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(mk_runtime_error(response))
@@ -22,11 +23,9 @@ class OlympusExapi:
         return response.json()["jwt"]
 
     def verify_token(self, jwt):
-        payload = {
-            "jwt" : jwt
-        }
+        payload = {"jwt": jwt}
         response = requests.post(f"{self._url}/api/sessions/verify/", json=payload)
-        
+
         if response.status_code != HTTPStatus.OK:
             raise RuntimeError(mk_runtime_error(response))
 
