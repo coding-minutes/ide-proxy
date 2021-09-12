@@ -10,6 +10,8 @@ class CodeFile:
     input: str
     id: str
     title: str
+    created_at: str
+    updated_at: str
 
     @classmethod
     def from_dict(cls, dikt: Dict) -> "CodeFile":
@@ -20,4 +22,6 @@ class CodeFile:
             input=dikt["input"],
             id=dikt.get("id", None),
             title=dikt["title"],
+            created_at=dikt["created_at"],
+            updated_at=dikt["updated_at"],
         )

@@ -16,6 +16,8 @@ class CodeFileSerializer(serializers.Serializer):
         max_length=4, read_only=True, required=False, allow_null=True
     )
     title = serializers.CharField()
+    created_at = serializers.DateField()
+    updated_at = serializers.DateField()
 
 
 class FetchUpdateCodeView(APIView):
@@ -40,6 +42,7 @@ class FetchUpdateCodeView(APIView):
             input=data.get("input"),
             code_id=code_id,
             user_email=user.email,
+            title=data.get("title")
         )
         serializer = CodeFileSerializer(code)
         data = serializer.data
@@ -59,6 +62,7 @@ class SaveCodeView(APIView):
             user_email=user.email,
             lang=data["lang"],
             input=data["input"],
+            title=data["title"]
         )
         serializer = CodeFileSerializer(code)
         data = serializer.data
