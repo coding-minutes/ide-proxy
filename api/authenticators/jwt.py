@@ -1,6 +1,6 @@
 from rest_framework import authentication
-from domain.models import User
-from utils.jwt import decode
+from exapi.olympus.models import Profile
+from exapi.olympus.service import get_olympus_exapi
 
 
 class JWTAuthentication(authentication.BaseAuthentication):
@@ -9,8 +9,9 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         if jwt:
             _, jwt = jwt.split(" ")
-            decoded = decode(jwt)
-            user = User.from_dict(decoded)
-            return user, jwt
+            verified = get_olympus_exapi().verify_token(jwt=jwt)
+            if verified:
+                profile = Profile.from_jwt(jwt)
+                return profile, jwt
 
         return None, None
