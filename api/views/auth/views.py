@@ -1,15 +1,13 @@
 from rest_framework.views import APIView
-from domain.services.authentication import get_google_authenticator
-from utils.jwt import encode
 from rest_framework.response import Response
+from exapi.olympus.service import get_olympus_exapi
 
 
-class GoogleAuthenticateView(APIView):
+class LoginView(APIView):
     def post(self, request):
         token = request.data.get("token")
-        user = get_google_authenticator().authenticate(google_jwt_token=token)
-        encoded = encode(user.to_dict())
-        return Response({"jwt": encoded}, status=200)
+        jwt = get_olympus_exapi().signin_with_token(token=token)
+        return Response({"jwt": jwt}, status=200)
 
 
 class VerifyAuthenticationView(APIView):
@@ -21,6 +19,7 @@ class VerifyAuthenticationView(APIView):
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
+                    "id" : user.id
                 },
                 status=200,
             )

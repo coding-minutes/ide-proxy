@@ -3,7 +3,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from domain.models import User
 from api.mixins.permissions import IsAuthenticated
 from exapi.ide_core.service import get_idecore_exapi
 
@@ -58,7 +57,7 @@ class SaveCodeView(APIView):
     @body_validator(serializer_class=CodeFileSerializer)
     def post(self, request, validated_data):
         data = validated_data
-        user: User = request.user
+        user = request.user
 
         code = get_idecore_exapi().save_code(
             source=data["source"],

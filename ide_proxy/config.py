@@ -8,5 +8,4 @@ class Config:
 
     IDE_CORE_URL = os.environ.get("IDE_CORE_URL")
     JUDGE_PROXY_URL = os.environ.get("JUDGE_PROXY_URL")
-
-    JWT_SECRET = os.environ.get("JWT_SECRET", "abc")
+    OLYMPUS_PROXY_URL = os.environ.get("OLYMPUS_PROXY_URL")
