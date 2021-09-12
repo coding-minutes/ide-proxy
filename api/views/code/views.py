@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -12,7 +11,7 @@ from utils.validator import body_validator
 class CodeFileSerializer(serializers.Serializer):
     source = serializers.CharField()
     lang = serializers.CharField()
-    input = serializers.CharField(default="", allow_null=True, required=False)
+    input = serializers.CharField(default="", allow_blank=True)
     id = serializers.CharField(
         max_length=4, read_only=True, required=False, allow_null=True
     )

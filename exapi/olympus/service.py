@@ -26,7 +26,7 @@ class OlympusExapi:
         payload = {"jwt": jwt}
         response = requests.post(f"{self._url}/api/sessions/verify/", json=payload)
 
-        if response.status_code != HTTPStatus.OK:
+        if response.status_code not in [HTTPStatus.OK, HTTPStatus.UNAUTHORIZED]:
             raise RuntimeError(mk_runtime_error(response))
 
         return response.json()["verified"]
