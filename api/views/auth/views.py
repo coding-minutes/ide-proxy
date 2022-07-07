@@ -5,8 +5,9 @@ from exapi.olympus.service import get_olympus_exapi
 
 class LoginView(APIView):
     def post(self, request):
-        token = request.data.get("token")
-        jwt = get_olympus_exapi().signin_with_token(token=token)
+        data = request.data
+        strategy = data.pop("strategy", "google")
+        jwt = get_olympus_exapi().signin_with_token(data=data, strategy=strategy)
         return Response({"jwt": jwt}, status=200)
 
 

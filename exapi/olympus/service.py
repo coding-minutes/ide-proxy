@@ -8,12 +8,10 @@ class OlympusExapi:
     def __init__(self, url: str):
         self._url = url
 
-    def signin_with_token(self, token):
+    def signin_with_token(self, data, strategy):
         payload = {
-            "data": {
-                "token": token,
-            },
-            "strategy": "google",
+            "data": data,
+            "strategy": strategy,
         }
         response = requests.post(f"{self._url}/api/users/signin/", json=payload)
 
